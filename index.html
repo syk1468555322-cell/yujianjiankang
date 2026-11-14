@@ -1,43 +1,1269 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>肩颈大作战 · 豫见健康</title>
-    <meta name="description" content="大学生肩颈健康互动闯关：8 站识别信号、拆解误区、解锁舒展技能，带走一份适合自己的日常行动。" />
-    <meta name="theme-color" content="#f2f5ee" />
-    <meta name="format-detection" content="telephone=no" />
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#9fd9f7">
+<meta name="description" content="「豫」辨健康，不谣而愈——健康谣言识辨小课堂。7道判断题，测测你的识谣力，练出一双辨谣的眼睛。">
+<meta name="keywords" content="健康谣言,辟谣,识谣,健康科普,河南省网络辟谣">
+<meta property="og:type" content="website">
+<meta property="og:title" content="「豫」辨健康 · 不谣而愈">
+<meta property="og:description" content="7道健康判断题，测测你的识谣力！">
+<meta property="og:site_name" content="「豫」辨健康 · 不谣而愈">
+<meta name="twitter:card" content="summary">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='8'%20fill='%231d5bd6'/%3E%3Cpath%20d='M9%2017l5%205%209-11'%20fill='none'%20stroke='%23ffd76a'%20stroke-width='3.5'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3C/svg%3E">
+<title>「豫」辨健康 · 不谣而愈</title>
+<style>
+/* ==========================================================================
+   「豫」辨健康 · 不谣而愈  —  优化版
+   优化点：答案混合 / 错题回顾 / 成绩等级 / 海报分享 / 无障碍 / 性能
+   ========================================================================== */
+:root{
+  --blue-900:#050f33; --blue-800:#0b2663; --blue-700:#14419f; --blue-600:#1d5bd6; --blue-500:#2f74dd;
+  --gold:#f5b91e; --gold-2:#ffd76a; --green:#16b566; --red:#e4405f;
+  --ink:#1c2b4a;
+  --serif:"Noto Serif SC","Source Han Serif SC","STZhongsong","SimSun",serif;
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-t:env(safe-area-inset-top,0px);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:"PingFang SC","HarmonyOS Sans SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:linear-gradient(180deg,#eaf5fd,#f7f3e6);
+  display:flex;justify-content:center;align-items:stretch;overflow:hidden;
+  overscroll-behavior:none;
+  -webkit-user-select:none;user-select:none;
+  -webkit-font-smoothing:antialiased;
+}
+#stage{position:relative;width:100%;max-width:480px;height:100vh;height:100dvh;overflow:hidden;background:#c6e9fc}
+@media (min-width:481px){
+  #stage{border-left:1px solid rgba(255,255,255,.7);border-right:1px solid rgba(255,255,255,.7);box-shadow:0 0 60px rgba(70,120,200,.35)}
+}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+button{font-family:inherit}
+:focus-visible{outline:3px solid #1d5bd6;outline-offset:3px;border-radius:6px}
 
-    <!-- 分享卡片（微信 / 社交平台） -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="豫见健康" />
-    <meta property="og:title" content="肩颈大作战 · 豫见健康" />
-    <meta property="og:description" content="8 站互动闯关，测测你的肩颈劳损指数，解锁一套宿舍就能做的舒展动作。" />
-    <meta property="og:image" content="https://syk1468555322-cell.github.io/yujianjiankang/mascot.webp" />
-    <meta property="og:image:width" content="800" />
-    <meta property="og:image:height" content="800" />
-    <meta property="og:url" content="https://syk1468555322-cell.github.io/yujianjiankang/" />
-    <meta name="twitter:card" content="summary_large_image" />
+/* ---------- 页面骨架 ---------- */
+.page{
+  position:absolute;inset:0;display:flex;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  opacity:0;visibility:hidden;transform:translateY(4%) scale(.996);
+  transition:opacity .5s ease,transform .5s ease,visibility .5s;
+  /* will-change 常驻会占用显存，仅在过渡期由浏览器自行提升即可 */
+}
+.page.active{opacity:1;visibility:visible;transform:none;z-index:2}
+.page:not(.active){pointer-events:none}
+.inner{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;z-index:3;
+  /* 内容层铺满全屏会吞掉装饰泡泡的点击：自身不接收指针事件，交互元素单独恢复 */
+  pointer-events:none}
+.inner button,.inner a[href],.inner input,.inner select,.inner textarea,.inner label,.inner [role="button"]{pointer-events:auto}
 
-    <link rel="icon" href="./favicon.png" sizes="64x64" />
-    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+/* 进场动画 */
+.anim-up{opacity:0}
+.page.active .anim-up{animation:up .7s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.1s!important}.d2{animation-delay:.22s!important}.d3{animation-delay:.34s!important}
+.d4{animation-delay:.46s!important}.d5{animation-delay:.58s!important}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 
-    <link rel="preload" as="image" href="./mascot.webp" />
-    <link rel="stylesheet" crossorigin href="./assets/index-ze9ZBCC7.css" />
-    <link rel="stylesheet" href="./assets/fix.css?v=20261110c" />
-    <script src="./assets/fix.js?v=20261110c" defer></script>
-    <script src="./assets/report.js?v=20261110c" defer></script>
-    <script src="./assets/pose.js?v=20261111" defer></script>
-    <script type="module" crossorigin src="./assets/index-Ci4b-qGl.js"></script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <noscript>
-      <div style="padding:32px 24px;font:16px/1.8 system-ui,-apple-system,'PingFang SC',sans-serif;color:#172925;background:#f2f5ee;min-height:100vh">
-        <h1 style="font-size:22px;margin:0 0 12px">肩颈大作战 · 豫见健康</h1>
-        <p style="margin:0 0 8px">本页是互动闯关，需要开启 JavaScript 才能体验。</p>
-        <p style="margin:0;color:#4f6058">请在浏览器设置中允许 JavaScript，或换用微信 / 手机自带浏览器打开。</p>
+/* ---------- 装饰层：统一包裹，裁剪溢出，非活动页暂停动画 ---------- */
+.deco{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+.page:not(.active) .deco *{animation-play-state:paused!important}
+.dot{position:absolute;border-radius:50%;left:var(--x,50%);top:var(--y,50%);width:var(--s,6px);height:var(--s,6px);
+  background:radial-gradient(circle,#fff 0%,rgba(255,214,64,.9) 42%,rgba(255,214,64,0) 72%);
+  animation:tw var(--t,7s) ease-in-out var(--d,0s) infinite}
+@keyframes tw{0%,100%{opacity:.12;transform:translateY(0)}50%{opacity:1;transform:translateY(-14px)}}
+.cloud{position:absolute;animation:drift 9s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translateX(-13px)}to{transform:translateX(13px)}}
+.sun{position:absolute;top:7%;right:10%;width:64px;height:64px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#fff6cf,#ffd257 55%,#ffb937);
+  box-shadow:0 0 32px rgba(255,193,73,.75);animation:sunGlow 4.5s ease-in-out infinite}
+@keyframes sunGlow{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.sunrise{position:absolute;left:50%;bottom:-24%;transform:translateX(-50%);width:150%;height:78%;
+  background:radial-gradient(ellipse at 50% 50%,rgba(255,196,64,.42) 0%,rgba(255,178,40,.14) 42%,rgba(255,178,40,0) 68%)}
+.wheat{position:absolute;bottom:-4px;transform-origin:50% 100%;animation:sway 5.2s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
+.w1{left:3%;height:clamp(96px,20vh,150px);animation-delay:.4s}
+.w2{left:29%;height:clamp(140px,30vh,215px)}
+.w3{right:24%;height:clamp(120px,26vh,185px);animation-delay:1.3s}
+.w4{right:2%;height:clamp(104px,22vh,160px);animation-delay:2s}
+/* 云 / 泡泡 / 光斑 / 十字：数量已下调，动画只用 transform + opacity */
+.femoji{position:absolute;background:rgba(255,255,255,.9);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.95);
+  box-shadow:0 6px 14px rgba(70,120,190,.2),inset 0 -3px 0 rgba(160,190,230,.3);
+  animation:bobSway var(--t,7s) ease-in-out var(--d,0s) infinite}
+@keyframes bobSway{0%,100%{transform:translate(0,0) rotate(-5deg)}50%{transform:translate(7px,-15px) rotate(5deg)}}
+/* 泡泡可戳破互动 */
+.femoji{pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.femoji:focus-visible{outline:2px solid #4a90d9;outline-offset:2px}
+.femoji.pop{animation:popBurst .3s cubic-bezier(.3,.6,.4,1) forwards!important;pointer-events:none}
+@keyframes popBurst{0%{transform:scale(1)}35%{transform:scale(1.28)}100%{transform:scale(0);opacity:0}}
+.pop-drop{position:absolute;border-radius:50%;pointer-events:none;z-index:2;
+  animation:dropFly .6s cubic-bezier(.2,.6,.4,1) forwards}
+@keyframes dropFly{from{transform:translate(0,0) scale(1);opacity:.95}to{transform:translate(var(--dx),var(--dy)) scale(.15);opacity:0}}
+.pop-plus{position:absolute;pointer-events:none;z-index:2;font-weight:900;font-size:15px;color:#4a90d9;
+  text-shadow:0 1px 0 #fff;animation:plusUp .8s ease-out forwards}
+@keyframes plusUp{from{transform:translateY(0);opacity:1}to{transform:translateY(-34px);opacity:0}}
+.femoji.respawn{animation:respawnIn .45s ease both}
+@keyframes respawnIn{from{opacity:0}to{opacity:1}}
+.bubble-chip{position:fixed;left:14px;bottom:calc(14px + var(--safe-b,0px));z-index:40;display:none;align-items:center;gap:5px;
+  background:rgba(255,255,255,.85);border:1px solid rgba(120,170,220,.5);color:#2a5a8f;
+  font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;pointer-events:none;
+  box-shadow:0 4px 12px rgba(70,120,190,.18);backdrop-filter:blur(4px)}
+.bokeh{position:absolute;border-radius:50%;opacity:.45;
+  animation:bokehFloat var(--t,12s) ease-in-out var(--d,0s) infinite alternate}
+@keyframes bokehFloat{from{transform:translateY(0) scale(1)}to{transform:translateY(-28px) scale(1.1)}}
+.crossx{position:absolute;width:16px;height:16px;animation:crossBob var(--t,8s) ease-in-out var(--d,0s) infinite}
+.crossx::before,.crossx::after{content:"";position:absolute;background:#7fb3ea;opacity:.7;border-radius:2px}
+.crossx::before{left:5px;top:0;width:6px;height:16px}
+.crossx::after{top:5px;left:0;width:16px;height:6px}
+@keyframes crossBob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-14px) rotate(18deg)}}
+.rainbow{position:absolute;top:11%;right:30%;width:130px;height:65px;border-radius:130px 130px 0 0;opacity:.7;
+  background:linear-gradient(180deg,rgba(255,128,150,.55) 0 25%,rgba(255,206,96,.55) 25% 50%,rgba(132,222,176,.55) 50% 75%,rgba(122,178,255,.55) 75% 100%)}
+.plane{position:absolute;top:15%;left:-170px;width:170px;animation:flyBy 14s linear 2s infinite}
+@keyframes flyBy{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(320px,36px) rotate(2deg)}100%{transform:translate(670px,-34px) rotate(-3deg)}}
+
+/* ---------- 第1页 封面 ---------- */
+#p1{background:linear-gradient(180deg,#9fd9f7 0%,#c6e9fc 38%,#fdf3d3 74%,#ffe8ae 100%)}
+#p1 .inner{padding:calc(44px + var(--safe-t)) 26px calc(150px + var(--safe-b))}
+.c1{top:10%;left:4%;width:92px;color:#fff}
+.c2{top:23%;right:4%;width:62px;color:#fff;animation-delay:1.2s}
+.c3{top:6%;left:45%;width:54px;color:#ffedc2;animation-delay:2.1s}
+.badge{color:#8a5a00;border:1px solid rgba(216,160,40,.55);background:rgba(255,255,255,.72);
+  font-size:12px;letter-spacing:2px;padding:7px 15px;border-radius:999px;font-weight:700}
+.title{font-family:var(--serif);font-size:clamp(36px,10.5vw,50px);font-weight:900;color:#17438f;
+  letter-spacing:3px;line-height:1.32;text-shadow:0 2px 12px rgba(255,255,255,.65)}
+.title+.title{margin-top:2px}
+.yu{color:#e08d00}
+.divider{width:64px;height:3px;margin-top:20px;border-radius:3px;background:linear-gradient(90deg,transparent,#f0a92e,transparent)}
+.subtitle{margin-top:16px;color:#35567f;font-size:15px;letter-spacing:1px;line-height:1.7}
+.cover-btn{margin-top:34px;padding:16px 42px;border:none;border-radius:999px;font-size:18px;font-weight:900;color:#54390a;
+  background:linear-gradient(135deg,#ffe08a,#f5a623);cursor:pointer;position:relative;z-index:4;
+  box-shadow:0 14px 30px rgba(240,160,40,.45),inset 0 1px 0 rgba(255,255,255,.65);
+  animation:pulseGold 2.4s ease-in-out infinite}
+@keyframes pulseGold{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.best-chip{margin-top:16px;display:none;align-items:center;gap:6px;background:rgba(255,255,255,.78);
+  border:1px solid rgba(216,160,40,.45);color:#7a5200;font-size:12.5px;font-weight:800;
+  padding:6px 14px;border-radius:999px;letter-spacing:.5px}
+.best-chip.on{display:inline-flex}
+.mini{position:absolute;bottom:calc(10px + var(--safe-b));left:0;width:100%;text-align:center;
+  color:rgba(100,80,40,.72);font-size:11px;letter-spacing:1.5px;z-index:4;pointer-events:none}
+
+/* 音效开关 */
+.sound-btn{position:absolute;top:calc(10px + var(--safe-t));right:10px;z-index:50;width:38px;height:38px;
+  border:none;border-radius:50%;background:rgba(255,255,255,.72);color:#35567f;font-size:17px;line-height:1;
+  cursor:pointer;box-shadow:0 4px 12px rgba(70,120,200,.18);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.sound-btn[aria-pressed="false"]{opacity:.55}
+
+/* ---------- 第2页 导言 ---------- */
+#p2{background:linear-gradient(180deg,#cdeafc 0%,#f2f9ff 55%,#fdf3d8 100%)}
+#p2 .inner{padding:34px 30px calc(34px + var(--safe-b))}
+.cloud.ib{top:5%;right:6%;width:76px;color:#fff}
+.p2-badge{background:#fff;color:var(--blue-600);border:1.5px solid #cfe0ff;font-weight:900;font-size:12.5px;
+  padding:7px 17px;border-radius:999px;letter-spacing:3px;box-shadow:0 6px 16px rgba(29,91,214,.08)}
+.p2-title{margin-top:22px;font-size:27px;font-weight:900;color:var(--blue-800);line-height:1.55;text-wrap:balance}
+.p2-body{margin-top:18px;font-size:16.5px;line-height:2.05;color:#3a4a6b}
+.p2-body .hl,.p2-body b.hl{color:#d63a53}
+.tip-box{margin-top:24px;background:#eef4ff;border:1.6px dashed #7ea6f0;color:#2a4a8f;border-radius:16px;
+  padding:13px 19px;font-size:14.5px;font-weight:700;line-height:1.7;max-width:100%}
+.start-btn{margin-top:30px;padding:15px 48px;border:none;border-radius:999px;font-size:18px;font-weight:900;color:#fff;
+  background:linear-gradient(135deg,#ff7a59,#e4405f);cursor:pointer;
+  box-shadow:0 12px 26px rgba(228,64,95,.35);animation:pulseRed 2.2s ease-in-out infinite}
+@keyframes pulseRed{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+/* ---------- 闯关页 ---------- */
+.q-page{
+  background:radial-gradient(120% 60% at 50% 0%,rgba(255,255,255,.85),transparent 62%),
+             linear-gradient(180deg,#b9e2fb 0%,#dbeefc 52%,#f2f8ff 100%);
+}
+.q-page::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(rgba(53,109,196,.13) 1.2px,transparent 1.3px);background-size:26px 26px;opacity:.5}
+.qd-a{--x:9%;--y:11%;--s:5px;--t:7s;--d:.4s}
+.qd-b{--x:85%;--y:24%;--s:6px;--t:8s;--d:1.8s}
+.q-head{display:flex;align-items:center;justify-content:space-between;padding:calc(20px + var(--safe-t)) 56px 0 22px;position:relative;z-index:3;pointer-events:none}
+.q-tag{background:linear-gradient(135deg,#ffd76a,#f5a623);color:#5a3b00;font-weight:900;font-size:14px;
+  padding:7px 15px;border-radius:999px;box-shadow:0 6px 14px rgba(240,160,40,.35);letter-spacing:1px}
+.q-count{color:#46689a;font-weight:800;font-size:15px;letter-spacing:1px}
+.q-count .dim{opacity:.5;font-weight:600}
+.q-bar{margin:12px 22px 0;height:6px;background:rgba(53,109,196,.16);border-radius:99px;overflow:hidden;position:relative;z-index:3;pointer-events:none}
+.q-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd76a,#f5a623);border-radius:99px;transition:width .5s cubic-bezier(.2,.7,.2,1)}
+.q-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;padding:6px 22px calc(28px + var(--safe-b));position:relative;z-index:3;pointer-events:none}
+.q-wrap button,.q-head button,.q-bar button{pointer-events:auto}
+.q-card{position:relative;background:#fff;border-radius:26px;padding:30px 22px 24px;border:1px solid #e4eefb;
+  box-shadow:0 14px 32px rgba(70,120,200,.22)}
+.q-card::before,.q-card::after{font-family:var(--serif);font-size:34px;font-weight:900;color:var(--gold);opacity:.9;line-height:1;position:absolute}
+.q-card::before{content:"「";top:12px;left:16px}
+.q-card::after{content:"」";bottom:10px;right:16px}
+.q-text{font-size:21px;font-weight:900;color:var(--ink);line-height:1.65;padding:0 12px;text-wrap:balance}
+.ans-row{display:flex;gap:12px;margin-top:24px}
+.ans-btn{flex:1;padding:15px 6px;border-radius:16px;font-size:17px;font-weight:800;cursor:pointer;transition:.22s;border:2px solid}
+.ans-btn:active{transform:scale(.97)}
+.ans-rumor{background:#fff;border-color:#f2aab9;color:#d23a56;box-shadow:0 6px 16px rgba(226,64,95,.12)}
+.ans-truth{background:#fff;border-color:#9cc3f5;color:#1d5bd6;box-shadow:0 6px 16px rgba(29,91,214,.12)}
+.q-page.answered .ans-btn{opacity:.4;pointer-events:none}
+.q-page.answered .ans-btn.chosen-correct{opacity:1;background:linear-gradient(135deg,#14bd6f,#0b9a58);color:#fff;border-color:transparent;box-shadow:0 8px 20px rgba(11,154,88,.35)}
+.q-page.answered .ans-btn.chosen-wrong{opacity:1;background:linear-gradient(135deg,#e4405f,#c92c4a);color:#fff;border-color:transparent;box-shadow:0 8px 20px rgba(201,44,74,.35);animation:shake .5s}
+.q-page.answered .ans-btn.reveal{opacity:1;box-shadow:0 0 0 3px #14bd6f inset}
+@keyframes shake{0%,100%{transform:none}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.explain{display:none;margin-top:18px;background:#fff;border-radius:20px;padding:18px 20px;border-left:6px solid var(--gold);
+  box-shadow:0 12px 28px rgba(70,120,200,.2)}
+.q-page.answered .explain{display:block;animation:up .5s ease both}
+.ex-ht{display:flex;align-items:center;gap:8px;font-weight:900;color:var(--ink);font-size:16px}
+.ex-ht::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#e3e9f5,transparent)}
+.ex-verdict{display:inline-block;margin-left:4px;font-size:12px;padding:2px 9px;border-radius:99px;font-weight:900;vertical-align:2px}
+.ex-verdict.ok{background:rgba(22,181,102,.14);color:#0b9a58}
+.ex-verdict.no{background:rgba(228,64,95,.13);color:#c92c4a}
+.ex-txt{margin-top:10px;font-size:15.5px;line-height:1.9;color:#33415e}
+.ex-txt b.r{color:#e4405f}
+.ex-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+.prev-btn{background:none;border:none;color:#5a7397;font-size:14px;font-weight:700;cursor:pointer;padding:6px 4px;letter-spacing:1px}
+.next-btn{margin-top:0;padding:15px 34px;border:none;border-radius:999px;font-size:17px;font-weight:900;color:#54390a;
+  background:linear-gradient(135deg,#ffd76a,#f5a623);cursor:pointer;box-shadow:0 10px 24px rgba(245,166,35,.35);
+  animation:pulseGold 2.2s ease-in-out infinite}
+.ex-nav .next-btn{flex:1}
+.congrats{display:none;margin-top:16px;text-align:center;border:1.5px dashed var(--gold);border-radius:18px;padding:14px 12px;
+  background:linear-gradient(135deg,rgba(255,215,106,.22),rgba(245,185,30,.07))}
+.q-page.answered .congrats{display:block;animation:up .55s .12s ease both}
+.congrats-t{font-size:18px;font-weight:900;color:#a86a00}
+.congrats-s{margin-top:6px;font-size:14px;font-weight:700;color:#8a6a20}
+.congrats-s b{font-size:20px;color:#e08a00;padding:0 2px}
+
+/* ---------- 结束页 ---------- */
+#pLast{background:linear-gradient(180deg,#9fd9f7 0%,#c9e9fd 32%,#fdf3d3 72%,#ffe8ae 100%)}
+#pLast .inner{padding:calc(30px + var(--safe-t)) 22px calc(40px + var(--safe-b))}
+#pLast .c1{top:6%;left:5%;width:74px;color:#fff}
+#pLast .c2{top:14%;right:4%;width:54px;color:#ffedc2;animation-delay:1.5s}
+.p8-eyebrow{color:#8a5a00;border:1px solid rgba(216,160,40,.55);background:rgba(255,255,255,.72);
+  font-size:12.5px;letter-spacing:2px;padding:7px 16px;border-radius:999px;font-weight:700}
+.p8-title{margin-top:14px;font-family:var(--serif);font-size:clamp(25px,6.8vw,31px);font-weight:900;color:#17438f;
+  letter-spacing:2px;line-height:1.4;text-shadow:0 2px 12px rgba(255,255,255,.6)}
+/* 成绩环 */
+.score-card{margin-top:16px;width:100%;background:#fff;border-radius:22px;padding:18px 18px 16px;
+  box-shadow:0 16px 36px rgba(70,120,200,.22);display:flex;align-items:center;gap:16px}
+.ring{position:relative;flex:0 0 108px;width:108px;height:108px}
+.ring svg{width:108px;height:108px;transform:rotate(-90deg)}
+.ring .bg{fill:none;stroke:#e8eef8;stroke-width:9}
+.ring .fg{fill:none;stroke:url(#ringGrad);stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset 1s cubic-bezier(.2,.7,.2,1)}
+.ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
+.ring-txt b{font-size:27px;color:#e08a00;font-weight:900}
+.ring-txt span{font-size:11.5px;color:#7a8aa5;font-weight:700;letter-spacing:1px}
+.score-right{flex:1;text-align:left}
+.level-name{font-size:22px;font-weight:900;color:var(--blue-700);letter-spacing:1px}
+.level-desc{margin-top:6px;font-size:13px;line-height:1.7;color:#54678a}
+.level-bar{margin-top:10px;height:7px;border-radius:99px;background:#eef2f9;overflow:hidden}
+.level-bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#ffd76a,#f5a623);transition:width 1s cubic-bezier(.2,.7,.2,1)}
+.cards{width:100%}
+.review-card{margin-top:14px;width:100%;background:#fff;border-radius:20px;padding:16px 18px;
+  box-shadow:0 14px 32px rgba(70,120,200,.2);text-align:left}
+.review-ht{font-size:16px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:7px}
+.review-ht small{margin-left:auto;font-size:12px;color:#8a9ab5;font-weight:700}
+.review-empty{margin-top:12px;font-size:14px;line-height:1.85;color:#0b9a58;font-weight:700;text-align:center;
+  background:rgba(22,181,102,.09);border-radius:14px;padding:14px 12px}
+.review-item{margin-top:12px;padding:12px 13px;border-radius:14px;background:#fff7f8;border-left:4px solid #e4405f}
+.review-q{font-size:14.5px;font-weight:800;color:#3a4a6b;line-height:1.6}
+.review-a{margin-top:6px;font-size:13px;color:#c92c4a;font-weight:800}
+.review-a em{font-style:normal;color:#0b9a58}
+.tips-card{margin-top:14px;background:#fff;border-radius:22px;padding:16px 18px 6px;width:100%;box-shadow:0 16px 36px rgba(70,120,200,.22)}
+.tips-ht{font-size:16.5px;font-weight:900;color:var(--ink);margin-bottom:2px}
+.tip-item{display:flex;gap:12px;align-items:flex-start;padding:12px 2px;border-bottom:1px dashed #e8edf7}
+.tip-item:last-child{border-bottom:none}
+.tip-ico{flex:0 0 36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#eaf2ff,#fdf4de);
+  display:flex;align-items:center;justify-content:center;font-size:18px}
+.tip-txt{font-size:14px;line-height:1.85;color:#3a4a6b;text-align:left}
+.tip-txt b{color:var(--blue-600)}
+.notice{margin-top:14px;width:100%;background:rgba(255,196,60,.18);border:1.6px dashed rgba(216,150,20,.65);border-radius:16px;
+  padding:12px 15px;color:#7a5200;font-size:12.5px;font-weight:800;line-height:1.85;text-align:center}
+.btn-row{display:flex;gap:10px;width:100%;margin-top:16px}
+.share-btn{flex:1;padding:16px;border:none;border-radius:999px;font-size:16.5px;font-weight:900;color:#54390a;
+  background:linear-gradient(135deg,#ffe08a,#f5a623);cursor:pointer;box-shadow:0 12px 26px rgba(240,160,40,.42);
+  animation:pulseGold 2.4s ease-in-out infinite}
+.poster-btn{flex:0 0 auto;padding:16px 20px;border:2px solid rgba(216,160,40,.6);border-radius:999px;font-size:16px;
+  font-weight:900;color:#8a5a00;background:rgba(255,255,255,.8);cursor:pointer}
+.restart-btn{margin-top:14px;background:none;border:none;color:#5a7397;font-size:14px;font-weight:700;
+  cursor:pointer;letter-spacing:2px;padding:6px 10px}
+.mini2{margin-top:14px;color:rgba(80,105,150,.68);font-size:11px;letter-spacing:1.5px;text-align:center;line-height:1.8}
+
+/* ---------- 弹窗 / 提示 ---------- */
+.overlay{position:absolute;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:20px;
+  background:rgba(30,60,115,.58);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
+  opacity:0;visibility:hidden;transition:.26s}
+.overlay.show{opacity:1;visibility:visible}
+.popup{width:min(84%,320px);background:#fff;border-radius:26px;padding:30px 24px 26px;text-align:center;
+  transform:scale(.84);transition:transform .32s cubic-bezier(.34,1.56,.64,1)}
+.overlay.show .popup{transform:scale(1)}
+.pop-emoji{font-size:54px;line-height:1}
+.pop-title{font-size:23px;font-weight:900;margin-top:12px;letter-spacing:1px}
+.overlay.good .pop-title{color:var(--green)}
+.overlay.bad .pop-title{color:var(--red)}
+.pop-sub{font-size:14.5px;color:#5a6a8a;margin-top:9px;line-height:1.65}
+.pop-btn{margin-top:20px;width:100%;padding:14px;border:none;border-radius:999px;font-size:16.5px;font-weight:900;color:#fff;cursor:pointer}
+.overlay.good .pop-btn{background:linear-gradient(135deg,#17bf6d,#0c9a56);box-shadow:0 10px 22px rgba(12,154,86,.32)}
+.overlay.bad .pop-btn{background:linear-gradient(135deg,#ee5c77,#d02e4f);box-shadow:0 10px 22px rgba(208,46,79,.32)}
+/* 海报 */
+.poster-pop{width:min(88%,340px);max-height:86%;display:flex;flex-direction:column;align-items:center}
+.poster-pop img{width:100%;max-height:62vh;object-fit:contain;border-radius:18px;box-shadow:0 16px 36px rgba(10,30,70,.35);background:#fff}
+.poster-tip{margin-top:14px;color:#eaf2ff;font-size:13.5px;font-weight:800;letter-spacing:1px;text-align:center;line-height:1.7}
+.poster-actions{margin-top:12px;display:flex;gap:10px}
+.poster-actions button{padding:11px 22px;border:none;border-radius:999px;font-size:14.5px;font-weight:900;cursor:pointer}
+#posterSave{background:linear-gradient(135deg,#ffe08a,#f5a623);color:#54390a}
+#posterClose{background:rgba(255,255,255,.22);color:#fff}
+/* 微信分享引导 */
+#wxGuide{z-index:70;background:rgba(10,22,54,.78);align-items:flex-start;justify-content:flex-end}
+#wxGuide .wx-arrow{position:absolute;top:calc(14px + var(--safe-t));right:24px;font-size:44px;line-height:1;
+  animation:wxBob 1.4s ease-in-out infinite}
+@keyframes wxBob{0%,100%{transform:translate(0,0)}50%{transform:translate(-6px,-8px)}}
+#wxGuide .wx-txt{margin:0 auto 22%;text-align:center;color:#fff}
+#wxGuide .wx-txt b{display:block;font-size:22px;font-weight:900;letter-spacing:1px}
+#wxGuide .wx-txt span{display:block;margin-top:10px;font-size:14.5px;color:#c8d8f0;line-height:1.8}
+#toast{position:absolute;left:50%;bottom:13%;transform:translateX(-50%) translateY(10px);background:rgba(10,22,54,.93);
+  color:#fff;padding:10px 19px;border-radius:999px;font-size:13.5px;opacity:0;transition:.3s;z-index:80;pointer-events:none;
+  max-width:80%;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%)}
+
+/* ---------- 小屏适配 ---------- */
+@media (max-height:680px){
+  .title{font-size:clamp(30px,9vw,40px)}
+  #p1 .inner{padding:calc(28px + var(--safe-t)) 24px calc(118px + var(--safe-b))}
+  .q-text{font-size:19px}
+  .q-card{padding:24px 18px 20px}
+  .ex-txt{font-size:14.5px;line-height:1.8}
+  .tip-txt{font-size:13px;line-height:1.7}
+  #pLast .inner{padding:22px 18px calc(28px + var(--safe-b))}
+  .ring,.ring svg{width:92px;height:92px}
+  .ring{flex-basis:92px}
+  .level-name{font-size:19px}
+}
+/* ---------- 减少动效 ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .cover-btn,.start-btn,.next-btn,.share-btn{animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- SVG 装饰定义：祥云 / 麦穗 / 麦粒 / 小飞机 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffd76a"/><stop offset="1" stop-color="#f5a623"/>
+    </linearGradient>
+    <g id="cloudDef">
+      <path d="M104 66 H38 C18 66 8 52 12 38 C15 26 27 20 39 22 C42 8 58 2 71 8 C78 2 90 2 97 9 C112 3 127 12 127 28 C136 32 138 44 132 52 C128 60 118 66 104 66 Z" fill="currentColor" opacity=".85"/>
+      <path d="M58 50 C48 50 43 42 48 35 C53 28 63 29 66 36 C69 44 63 52 53 53" fill="none" stroke="#8ec2ef" stroke-width="4.5" stroke-linecap="round" opacity=".75"/>
+      <path d="M95 46 C89 46 86 41 89 37 C92 33 98 34 99 39 C100 43 97 46 93 47" fill="none" stroke="#8ec2ef" stroke-width="3.4" stroke-linecap="round" opacity=".5"/>
+    </g>
+    <path id="grainDef" d="M0 0 C-7 9 -7 21 0 26 C7 21 7 9 0 0 Z"/>
+    <g id="wheatDef">
+      <path d="M41 230 C40 176 40 106 42 54" fill="none" stroke="#c9992e" stroke-width="5" stroke-linecap="round"/>
+      <g fill="#f4bd2e" stroke="#b8860b" stroke-width="1">
+        <use href="#grainDef" xlink:href="#grainDef" transform="translate(39,182) rotate(-36)"/>
+        <use href="#grainDef" xlink:href="#grainDef" transform="translate(44,182) rotate(36)"/>
+        <use href="#grainDef" xlink:href="#grainDef" transform="translate(38,156) rotate(-32) scale(.96)"/>
+        <use href="#grainDef" xlink:href="#grainDef" transform="translate(45,156) rotate(32) scale(.96)"/>
+        <use href="#grainDef" xlink:href="#grainDef" transform="translate(38,130) rotate(-28) scale(.92)"/>
+        <use href="#grainDef" xlink:href="#grainDef" transform="translate(45,130) rotate(28) scale(.92)"/>
+        <use href="#grainDef" xlink:href="#grainDef" transform="translate(39,105) rotate(-24) scale(.88)"/>
+        <use href="#grainDef" xlink:href="#grainDef" transform="translate(44,105) rotate(24) scale(.88)"/>
+        <use href="#grainDef" xlink:href="#grainDef" transform="translate(40,82) rotate(-18) scale(.85)"/>
+        <use href="#grainDef" xlink:href="#grainDef" transform="translate(43,82) rotate(18) scale(.85)"/>
+        <use href="#grainDef" xlink:href="#grainDef" transform="translate(41.5,60) rotate(0) scale(.9)"/>
+      </g>
+      <g stroke="#f4d98a" stroke-width="2.4" stroke-linecap="round" fill="none">
+        <path d="M41.5 62 L30 12"/><path d="M41.5 62 L42 6"/><path d="M41.5 62 L54 12"/>
+      </g>
+    </g>
+    <g id="planeDef">
+      <path d="M4 66 C 30 64, 52 52, 72 42" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 8" opacity=".95"/>
+      <g transform="translate(72,24) rotate(12) scale(.5)">
+        <path d="M96 4 L4 32 L48 46 Z" fill="#ffffff" stroke="#7fa6d9" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M48 46 L42 62 L60 48 Z" fill="#e4eefa" stroke="#7fa6d9" stroke-width="3" stroke-linejoin="round"/>
+      </g>
+    </g>
+  </defs>
+</svg>
+
+<div id="stage">
+
+  <!-- 音效开关：置于舞台层，全流程可用 -->
+  <button class="sound-btn" id="soundBtn" type="button" aria-pressed="true" aria-label="音效开关" title="音效开关">🔊</button>
+
+  <!-- ============ 封面 ============ -->
+  <section class="page active" id="p1" aria-label="封面">
+    <div class="deco"></div>
+    <div class="inner">
+      <h1 class="title anim-up">「<span class="yu">豫</span>」辨健康</h1>
+      <p class="title anim-up d2">不谣而愈</p>
+      <div class="divider anim-up d2"></div>
+      <p class="subtitle anim-up d3">“豫”你一起同心护网——健康谣言识辨小课堂</p>
+      <button class="cover-btn anim-up d4" type="button" id="coverBtn">👉 点击开启识谣之旅</button>
+      <div class="best-chip" id="bestChip" aria-live="polite"></div>
+    </div>
+    <div class="mini anim-up d5">科普仅供参考 · 不构成诊疗建议</div>
+  </section>
+
+  <!-- ============ 导言 ============ -->
+  <section class="page" id="p2" aria-label="写在前面">
+    <div class="deco"></div>
+    <div class="inner">
+      <div class="p2-badge anim-up">写 在 前 面</div>
+      <h2 class="p2-title anim-up d1">网上的健康说法，<br>真的都靠谱吗？</h2>
+      <p class="p2-body anim-up d2">
+        刷短视频、浏览朋友圈的时候，<br>
+        我们总能看到五花八门的“养生秘方”“医学忠告”。<br>
+        但很多广为流传的说法，其实都是<b class="hl">网络谣言</b>！
+      </p>
+      <p class="p2-body anim-up d3">作为医学生，我们希望用所学知识，<br>帮大家擦亮双眼，科学辨谣。</p>
+      <div class="tip-box anim-up d4">💡 接下来有 <span id="qTotalTip">7</span> 道判断题，一起来闯关吧！</div>
+      <button class="start-btn anim-up d5" type="button" id="startBtn">开始闯关 🚩</button>
+    </div>
+  </section>
+
+  <!-- 闯关页由 JS 动态生成，插入此处 -->
+
+  <!-- ============ 结束页 ============ -->
+  <section class="page" id="pLast" aria-label="挑战结果">
+    <div class="deco"></div>
+    <div class="inner">
+      <div class="p8-eyebrow anim-up">同心护网 · 共同倡议</div>
+      <h2 class="p8-title anim-up d1">「<span class="yu">豫</span>」你一起，同心护网</h2>
+
+      <div class="score-card anim-up d2">
+        <div class="ring">
+          <svg viewBox="0 0 108 108" aria-hidden="true">
+            <circle class="bg" cx="54" cy="54" r="46"></circle>
+            <circle class="fg" id="ringFg" cx="54" cy="54" r="46" stroke-dasharray="289" stroke-dashoffset="289"></circle>
+          </svg>
+          <div class="ring-txt"><b id="ringScore">0</b><span id="ringTotal">/ 7 题</span></div>
+        </div>
+        <div class="score-right">
+          <div class="level-name" id="levelName">—</div>
+          <div class="level-desc" id="levelDesc">正在统计…</div>
+          <div class="level-bar"><i id="levelBar"></i></div>
+        </div>
       </div>
-    </noscript>
-  </body>
+
+      <div class="review-card anim-up d3">
+        <div class="review-ht">🧠 识谣盲区自查 <small id="reviewCount"></small></div>
+        <div id="reviewBody"></div>
+      </div>
+
+      <div class="tips-card anim-up d4">
+        <div class="tips-ht">📌 防谣小锦囊</div>
+        <div class="tip-item"><div class="tip-ico">🔍</div><div class="tip-txt">看到网传“医学忠告”，优先查阅<b>科普中国、河南省网络辟谣平台</b>等权威来源；</div></div>
+        <div class="tip-item"><div class="tip-ico">🚫</div><div class="tip-txt">不随意转发<b>无明确出处</b>的养生消息；</div></div>
+        <div class="tip-item"><div class="tip-ico">🏥</div><div class="tip-txt">身体不适<b>及时就医</b>，不要轻信网上“神药偏方”；</div></div>
+        <div class="tip-item"><div class="tip-ico">💡</div><div class="tip-txt">理性上网、科学求真，<b>不信谣、不传谣、不造谣</b>！</div></div>
+      </div>
+
+      <div class="notice anim-up d5">⚠️ 本内容经AI技术辅助生成<br>科普仅供参考，不能替代专业医疗建议</div>
+
+      <div class="btn-row anim-up d5">
+        <button class="share-btn" id="shareBtn" type="button">转发给亲友，一起科学辨谣！</button>
+        <button class="poster-btn" id="posterBtn" type="button" aria-label="生成成绩海报">🖼️ 海报</button>
+      </div>
+      <button class="restart-btn anim-up d5" id="restartBtn" type="button">↺ 重新挑战</button>
+      <div class="mini2 anim-up d5">「豫」辨健康 · 不谣而愈<br>2026年度河南省互联网辟谣优秀作品征集</div>
+    </div>
+  </section>
+
+  <!-- 答题反馈弹窗 -->
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="popTitle" aria-hidden="true">
+    <div class="popup">
+      <div class="pop-emoji" id="popEmoji">✅</div>
+      <div class="pop-title" id="popTitle">回答正确！</div>
+      <div class="pop-sub" id="popSub">没错，这就是一条网络谣言</div>
+      <button class="pop-btn" id="popBtn" type="button">查看科学解析 →</button>
+    </div>
+  </div>
+
+  <!-- 海报弹窗 -->
+  <div class="overlay" id="posterOverlay" role="dialog" aria-modal="true" aria-label="成绩海报" aria-hidden="true">
+    <div class="poster-pop">
+      <img id="posterImg" alt="识谣挑战成绩海报">
+      <div class="poster-tip" id="posterTip">长按图片保存，转发给亲友一起辨谣</div>
+      <div class="poster-actions">
+        <button id="posterSave" type="button">下载海报</button>
+        <button id="posterClose" type="button">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 微信分享引导 -->
+  <div class="overlay" id="wxGuide" role="dialog" aria-modal="true" aria-label="分享引导" aria-hidden="true">
+    <div class="wx-arrow" aria-hidden="true">☝️</div>
+    <div class="wx-txt">
+      <b>点击右上角「···」</b>
+      <span>选择「发送给朋友」或「分享到朋友圈」<br>让亲友一起来辨谣</span>
+    </div>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+  <div class="sr-only" id="live" aria-live="polite"></div>
+</div>
+
+<noscript>
+  <div style="padding:40px 24px;text-align:center;font-size:16px;line-height:2;color:#1c2b4a">
+    本页需要在支持 JavaScript 的浏览器中打开 🙂<br>请用手机浏览器或微信打开体验。
+  </div>
+</noscript>
+
+<script>
+/* ==========================================================================
+   1) 题库：answers 混合（原 5 题均为“谣言”，此处保留全部原题，
+      并新增 2 道“真相”题，使答案分布为 谣言/真相 混合，答题不再能靠套路得分）
+   ========================================================================== */
+var QUESTIONS = [
+  {
+    q: '生姜擦头皮，可以生发防脱发？',
+    a: 'rumor',
+    ex: '<b class="r">❗谣言！</b>生姜中的6-姜酚反而有可能抑制毛囊生长，甚至刺激头皮、加重皮炎。脱发请前往正规医院皮肤科就诊，不要迷信民间偏方。',
+    brief: '生姜中的6-姜酚可能抑制毛囊生长，还会刺激头皮'
+  },
+  {
+    q: '勤洗手、常通风，能有效降低呼吸道传染病风险？',
+    a: 'truth',
+    ex: '<b>✅ 真相。</b>呼吸道病原体主要通过飞沫和接触传播。规范洗手、开窗通风是成本最低、证据最充分的日常防护手段之一，值得坚持。',
+    brief: '规范洗手＋开窗通风，是证据最充分的基础防护'
+  },
+  {
+    q: '换季输液通血管，可以预防心脑血管病？',
+    a: 'rumor',
+    ex: '<b class="r">❗谣言！</b>血管不存在“定期冲洗”的说法。盲目输液不仅不能疏通血管，还可能引发过敏、静脉炎、加重心脏负荷。保护血管需要遵医嘱、规律作息、均衡饮食。',
+    brief: '血管不存在“定期冲洗”，盲目输液反而有风险'
+  },
+  {
+    q: '按摩淋巴结，可以给身体排毒？',
+    a: 'rumor',
+    ex: '<b class="r">❗谣言！</b>淋巴结是人体的免疫器官，并不是“排毒通道”。用力揉搓按压，可能造成软组织损伤、炎症扩散。人体代谢废物主要依靠肝脏、肾脏完成。',
+    brief: '淋巴结是免疫器官，不是“排毒通道”'
+  },
+  {
+    q: '成年人每天睡够7~8小时，有助于维持正常免疫力？',
+    a: 'truth',
+    ex: '<b>✅ 真相。</b>睡眠是免疫系统修复与调节的重要时段，长期睡眠不足与感染风险升高、免疫功能下降相关。规律作息本身，就是性价比最高的健康投资。',
+    brief: '长期睡眠不足会削弱免疫功能，规律作息很重要'
+  },
+  {
+    q: '喝高度白酒，可以杀菌抗病毒？',
+    a: 'rumor',
+    ex: '<b class="r">❗谣言！</b>只有75%医用酒精可用于体外消毒，喝进体内的白酒无法杀灭病毒，反而会损伤消化道黏膜，加重肝肾负担。',
+    brief: '只有75%医用酒精能用于体外消毒，喝进去没用'
+  },
+  {
+    q: '晚上11点不睡，肝脏就无法排毒？',
+    a: 'rumor',
+    ex: '<b class="r">❗谣言！</b>肝脏24小时不间断进行代谢解毒，不存在固定“排毒时辰”。当然熬夜确实损害健康，但不必被时辰论过度焦虑。',
+    brief: '肝脏24小时都在代谢解毒，没有固定“排毒时辰”'
+  }
+];
+
+var LEVELS = [
+  { min: 1,    name: '🏆 辟谣达人',   desc: '全部答对！你的辨谣眼力已满级，快把这份清醒传递给身边的人。' },
+  { min: 0.85, name: '🥇 辨谣高手',   desc: '几乎全中！偶有疏漏，但只要保持“先怀疑、再查证”的习惯，你就是朋友圈的辟谣担当。' },
+  { min: 0.6,  name: '🥈 识谣能手',   desc: '基础不错！个别说法还能骗到你，建议重点关注“排毒”“输液通血管”这类高频套路。' },
+  { min: 0.4,  name: '🌱 初出茅庐',   desc: '有辨谣意识，但套路识别还不够。多看看权威科普，进步会很快。' },
+  { min: 0,    name: '📚 仍需修炼',   desc: '别灰心！这些说法本就刻意写得“很像真的”。记住锦囊里的四条，下次一定进步。' }
+];
+
+var SHUFFLE = true;          // 每次挑战题目顺序随机，提升重玩价值
+var STORE_KEY = 'yubian_v2_best';
+var SOUND_KEY = 'yubian_v2_sound';
+
+/* ==========================================================================
+   2) 工具
+   ========================================================================== */
+function $(s, r){ return (r || document).querySelector(s); }
+function $$(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+function rand(a, b){ return a + Math.random() * (b - a); }
+function fmt(n){ return Math.round(n * 10) / 10; }
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+var isWeChat = /MicroMessenger/i.test(navigator.userAgent);
+
+/* 轻量音效（WebAudio 生成，无外部资源；可开关） */
+var sound = (function(){
+  var ctx = null, on = true;
+  try { on = localStorage.getItem(SOUND_KEY) !== '0'; } catch(e){}
+  function ensure(){
+    if(ctx) return ctx;
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if(!AC) return null;
+    try { ctx = new AC(); } catch(e){ ctx = null; }
+    return ctx;
+  }
+  function tone(freq, dur, delay, vol){
+    var c = ensure(); if(!c || !on) return;
+    if(c.state === 'suspended'){ try{ c.resume(); }catch(e){} }
+    var t0 = c.currentTime + (delay || 0);
+    var o = c.createOscillator(), g = c.createGain();
+    o.type = 'sine'; o.frequency.value = freq;
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(vol || 0.06, t0 + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g); g.connect(c.destination);
+    o.start(t0); o.stop(t0 + dur + 0.02);
+  }
+  function pop(){
+    var c = ensure(); if(!c || !on) return;
+    if(c.state === 'suspended'){ try{ c.resume(); }catch(e){} }
+    var t0 = c.currentTime;
+    var o = c.createOscillator(), g = c.createGain();
+    o.type = 'triangle';
+    o.frequency.setValueAtTime(900, t0);
+    o.frequency.exponentialRampToValueAtTime(160, t0 + .12);
+    g.gain.setValueAtTime(.09, t0);
+    g.gain.exponentialRampToValueAtTime(.0001, t0 + .15);
+    o.connect(g); g.connect(c.destination);
+    o.start(t0); o.stop(t0 + .17);
+  }
+  return {
+    correct: function(){ tone(880, .16, 0, .06); tone(1320, .22, .1, .05); },
+    wrong:   function(){ tone(320, .22, 0, .05); tone(220, .28, .12, .05); },
+    finish:  function(){ tone(660, .18, 0, .05); tone(880, .18, .12, .05); tone(1180, .3, .24, .05); },
+    pop:     pop,
+    isOn:    function(){ return on; },
+    set:     function(v){ on = v; try{ localStorage.setItem(SOUND_KEY, v ? '1' : '0'); }catch(e){} }
+  };
+})();
+
+/* ==========================================================================
+   3) 背景装饰：只在活动页渲染一次，非活动页动画自动暂停
+   ========================================================================== */
+var NS = 'http://www.w3.org/2000/svg';
+function addCloud(page, i){
+  var c = document.createElementNS(NS, 'svg');
+  c.setAttribute('viewBox', '0 0 140 72');
+  c.setAttribute('class', 'cloud');
+  c.setAttribute('aria-hidden', 'true');
+  var u = document.createElementNS(NS, 'use');
+  u.setAttribute('href', '#cloudDef');
+  u.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#cloudDef');
+  c.appendChild(u);
+  c.style.top = fmt(rand(4, 16)) + '%';
+  c.style.width = fmt(rand(48, 70)) + 'px';
+  c.style.color = '#ffffff';
+  c.style.animationDuration = fmt(rand(8, 13)) + 's';
+  if(i % 2 === 0) c.style.left = fmt(rand(3, 12)) + '%';
+  else c.style.right = fmt(rand(3, 12)) + '%';
+  page.appendChild(c);
+}
+var POS = [['6%','14%'],['84%','9%'],['89%','32%'],['5%','44%'],['78%','60%'],['9%','68%']];
+/* 泡泡戳破：炸开 + 水珠粒子 + 计数彩蛋，约 2.6s 后原位重新冒出 */
+var popCount = 0, chip = null;
+function getChip(){
+  if(chip) return chip;
+  chip = document.createElement('div');
+  chip.className = 'bubble-chip'; chip.id = 'bubbleChip';
+  chip.setAttribute('aria-live', 'polite');
+  document.body.appendChild(chip);
+  return chip;
+}
+function popBubble(b){
+  if(b.classList.contains('pop')) return;
+  b.classList.add('pop');
+  sound.pop();
+  if(navigator.vibrate){ try{ navigator.vibrate(12); }catch(e){} }
+  var deco = b.parentNode;
+  var cx = b.offsetLeft + b.offsetWidth / 2, cy = b.offsetTop + b.offsetHeight / 2;
+  for(var k = 0; k < 8; k++){
+    var ang = (Math.PI * 2 * k) / 8 + rand(-.25, .25), dist = rand(26, 52);
+    var dr = document.createElement('div');
+    dr.className = 'pop-drop'; dr.setAttribute('aria-hidden', 'true');
+    var sz = rand(5, 9);
+    dr.style.cssText = 'left:' + fmt(cx - sz / 2) + 'px;top:' + fmt(cy - sz / 2) + 'px;width:' + fmt(sz) +
+      'px;height:' + fmt(sz) + 'px;background:' + (k % 2 ? 'rgba(255,255,255,.95)' : 'rgba(190,225,255,.95)') +
+      ';--dx:' + fmt(Math.cos(ang) * dist) + 'px;--dy:' + fmt(Math.sin(ang) * dist + rand(8, 22)) + 'px';
+    deco.appendChild(dr);
+    setTimeout(function(el){ return function(){ el.remove(); }; }(dr), 650);
+  }
+  var plus = document.createElement('div');
+  plus.className = 'pop-plus'; plus.textContent = '+1';
+  plus.style.cssText = 'left:' + fmt(b.offsetLeft + b.offsetWidth / 2 - 10) + 'px;top:' + fmt(b.offsetTop - 6) + 'px';
+  deco.appendChild(plus);
+  setTimeout(function(el){ return function(){ el.remove(); }; }(plus), 850);
+  popCount++;
+  var cEl = getChip();
+  cEl.textContent = '🫧 已戳破 ' + popCount + ' 个泡泡';
+  cEl.style.display = 'flex';
+  setTimeout(function(){
+    b.classList.remove('pop');
+    b.classList.add('respawn');
+    setTimeout(function(){ b.classList.remove('respawn'); }, 500);
+  }, 2600);
+}
+function addBubbles(page, set){
+  set.forEach(function(em, i){
+    var p = POS[i % POS.length], s = rand(34, 48);
+    var b = document.createElement('div');
+    b.className = 'femoji';
+    b.textContent = em;
+    b.setAttribute('aria-hidden', 'true');
+    b.style.cssText = 'left:' + p[0] + ';top:' + p[1] + ';width:' + fmt(s) + 'px;height:' + fmt(s) +
+      'px;font-size:' + fmt(s * .48) + 'px;--t:' + fmt(rand(5, 8)) + 's;--d:' + fmt(rand(0, 3)) + 's';
+    b.addEventListener('click', function(){ popBubble(b); });
+    page.appendChild(b);
+  });
+}
+var COL = ['#ffd3e0','#fff0a8','#c9f5e2','#d9e7ff','#ffdfc4','#e6d9ff'];
+function addBokeh(page, n){
+  for(var k = 0; k < n; k++){
+    var sz = rand(22, 56), d = document.createElement('div');
+    d.className = 'bokeh';
+    d.setAttribute('aria-hidden', 'true');
+    d.style.cssText = 'left:' + fmt(rand(3, 88)) + '%;top:' + fmt(rand(5, 80)) + '%;width:' + fmt(sz) +
+      'px;height:' + fmt(sz) + 'px;background:' + COL[k % COL.length] + ';--t:' + fmt(rand(9, 15)) + 's;--d:'
+      + fmt(rand(0, 5)) + 's';
+    page.appendChild(d);
+  }
+}
+var XP = [['16%','9%'],['90%','55%'],['78%','16%'],['12%','55%']];
+function addCross(page, n){
+  for(var k = 0; k < n; k++){
+    var c = document.createElement('div');
+    c.className = 'crossx';
+    c.setAttribute('aria-hidden', 'true');
+    c.style.cssText = 'left:' + XP[k][0] + ';top:' + XP[k][1] + ';--t:' + fmt(rand(6, 10)) + 's;--d:' + fmt(rand(0, 3)) + 's';
+    page.appendChild(c);
+  }
+}
+function addCoverArt(page){
+  var sun = document.createElement('div'); sun.className = 'sun'; sun.setAttribute('aria-hidden', 'true');
+  var sr = document.createElement('div'); sr.className = 'sunrise'; sr.setAttribute('aria-hidden', 'true');
+  var rb = document.createElement('div'); rb.className = 'rainbow'; rb.setAttribute('aria-hidden', 'true');
+  page.appendChild(sr); page.appendChild(sun); page.appendChild(rb);
+  var pl = document.createElementNS(NS, 'svg');
+  pl.setAttribute('class', 'plane'); pl.setAttribute('viewBox', '0 0 200 80'); pl.setAttribute('aria-hidden', 'true');
+  var pu = document.createElementNS(NS, 'use');
+  pu.setAttribute('href', '#planeDef');
+  pu.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#planeDef');
+  pl.appendChild(pu); page.appendChild(pl);
+  [[10,4,92,'c1'],[23,4,62,'c2'],[6,45,54,'c3']].forEach(function(v){
+    var s = document.createElementNS(NS, 'svg');
+    s.setAttribute('class', 'cloud ' + v[3]);
+    s.setAttribute('viewBox', '0 0 140 72');
+    s.setAttribute('aria-hidden', 'true');
+    s.style.top = v[0] + '%';
+    s.style.width = v[2] + 'px';
+    if(v[3] === 'c2'){ s.style.right = v[1] + '%'; } else { s.style.left = v[1] + '%'; }
+    s.style.color = v[3] === 'c3' ? '#ffedc2' : '#ffffff';
+    var u = document.createElementNS(NS, 'use');
+    u.setAttribute('href', '#cloudDef');
+    u.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#cloudDef');
+    s.appendChild(u); page.appendChild(s);
+  });
+  var wheat = [[3,96,150,.4],[29,140,215,0],[24,120,185,1.3],[2,104,160,2]];
+  wheat.forEach(function(w, i){
+    var s = document.createElementNS(NS, 'svg');
+    s.setAttribute('class', 'wheat w' + (i + 1));
+    s.setAttribute('viewBox', '0 0 84 232');
+    s.setAttribute('aria-hidden', 'true');
+    s.style.animationDelay = w[3] + 's';
+    if(i < 2) s.style.left = w[0] + '%'; else s.style.right = w[0] + '%';
+    s.style.height = 'clamp(' + w[1] + 'px,' + (w[2] / 7.2) + 'vh,' + w[2] + 'px)';
+    var u = document.createElementNS(NS, 'use');
+    u.setAttribute('href', '#wheatDef');
+    u.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#wheatDef');
+    s.appendChild(u); page.appendChild(s);
+  });
+  [['12%','15%','7px','6.5s','.3s'],['78%','10%','5px','7.5s','1.1s'],['88%','31%','8px','8.5s','2s'],
+   ['22%','38%','5px','7s','.7s'],['60%','25%','6px','6s','1.6s'],['8%','56%','6px','9s','.9s']]
+   .forEach(function(d){
+     var e = document.createElement('div');
+     e.className = 'dot'; e.setAttribute('aria-hidden', 'true');
+     e.style.cssText = '--x:' + d[0] + ';--y:' + d[1] + ';--s:' + d[2] + ';--t:' + d[3] + ';--d:' + d[4];
+     page.appendChild(e);
+   });
+}
+function decorate(page, type){
+  var d = $('.deco', page); if(!d || d.dataset.done) return;
+  d.dataset.done = '1';
+  if(type === 'cover'){ addCoverArt(d); addBubbles(d, ['💊','🩺','❤️','🍃']); addBokeh(d, 5); }
+  else if(type === 'intro'){ addCloud(d, 0); addBubbles(d, ['📖','💬','❓']); addBokeh(d, 4); }
+  else if(type === 'quiz'){ addCloud(d, 0); addCloud(d, 1); addBubbles(d, ['💊','🩺','🔬','❤️']); addBokeh(d, 4); addCross(d, 2); }
+  else if(type === 'final'){
+    var sr = document.createElement('div'); sr.className = 'sunrise'; sr.setAttribute('aria-hidden', 'true');
+    d.appendChild(sr);
+    addCloud(d, 1); addCloud(d, 0); addBubbles(d, ['🛡️','🌟','💪']); addBokeh(d, 4);
+    [['14%','12%','6px','7s','.4s'],['82%','9%','5px','8s','1.5s'],['70%','22%','7px','6.5s','.9s']].forEach(function(v){
+      var e = document.createElement('div'); e.className = 'dot'; e.setAttribute('aria-hidden', 'true');
+      e.style.cssText = '--x:' + v[0] + ';--y:' + v[1] + ';--s:' + v[2] + ';--t:' + v[3] + ';--d:' + v[4];
+      d.appendChild(e);
+    });
+  }
+}
+
+/* ==========================================================================
+   4) 浮层（含焦点管理 + Esc 关闭 + 焦点循环）
+   ========================================================================== */
+var lastFocus = null;
+function openOverlay(el){
+  lastFocus = document.activeElement;
+  el.classList.add('show');
+  el.setAttribute('aria-hidden', 'false');
+  var f = $$('button, a[href]', el)[0];
+  if(f) setTimeout(function(){ f.focus(); }, 60);
+}
+function closeOverlay(el){
+  el.classList.remove('show');
+  el.setAttribute('aria-hidden', 'true');
+  if(lastFocus && lastFocus.focus) try{ lastFocus.focus(); }catch(e){}
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape'){
+    $$('.overlay.show').forEach(function(o){ if(o.id !== 'wxGuide') closeOverlay(o); });
+  }
+  var open = $('.overlay.show');
+  if(open && e.key === 'Tab'){
+    var f = $$('button, a[href], [tabindex]:not([tabindex="-1"])', open);
+    if(!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  }
+});
+
+/* ==========================================================================
+   5) 核心流程
+   ========================================================================== */
+var pages = [], cur = 0, order = [], answers = [], score = 0;
+var quizSections = [], quizOffset = 0;
+
+function announce(msg){ var l = $('#live'); if(l) l.textContent = msg; }
+
+function buildQuiz(){
+  // 清掉上一次的题目页
+  quizSections.forEach(function(s){ s.remove(); });
+  quizSections = [];
+  order = SHUFFLE ? shuffle(QUESTIONS) : QUESTIONS.slice();
+  answers = [];
+  score = 0;
+  var last = $('#pLast');
+  order.forEach(function(item, i){
+    var sec = document.createElement('section');
+    sec.className = 'page q-page';
+    sec.id = 'q' + i;
+    sec.setAttribute('aria-label', '闯关 ' + (i + 1));
+    sec.innerHTML =
+      '<div class="deco"></div>' +
+      '<header class="q-head anim-up">' +
+        '<div class="q-tag">闯关 ' + (i + 1) + '</div>' +
+        '<div class="q-count">' + (i + 1) + '<span class="dim"> / ' + order.length + '</span></div>' +
+      '</header>' +
+      '<div class="q-bar anim-up d1"><i style="width:' + Math.round((i + 1) / order.length * 100) + '%"></i></div>' +
+      '<div class="q-wrap">' +
+        '<div class="q-card anim-up d1">' +
+          '<p class="q-text">' + item.q + '</p>' +
+          '<div class="ans-row" role="group" aria-label="请选择">' +
+            '<button class="ans-btn ans-rumor" type="button" data-answer="rumor" aria-label="我判断这条是谣言">✅ 是谣言</button>' +
+            '<button class="ans-btn ans-truth" type="button" data-answer="truth" aria-label="我判断这条是真相">✔️ 是真相</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="explain" hidden>' +
+          '<div class="ex-ht">🔬 科普解析 <span class="ex-verdict" data-verdict></span></div>' +
+          '<p class="ex-txt">' + item.ex + '</p>' +
+          '<div class="ex-nav">' +
+            (i > 0 ? '<button class="prev-btn" type="button" data-go="' + (i - 1) + '">← 上一题</button>' : '<span></span>') +
+            '<button class="next-btn" type="button" data-go="' + (i + 1) + '">' +
+              (i === order.length - 1 ? '查看成绩 →' : '下一题 →') + '</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    last.parentNode.insertBefore(sec, last);
+    quizSections.push(sec);
+    decorate(sec, 'quiz');
+  });
+  pages = $$('.page');
+  // 题目页在 pages 中的起始下标：data-go 里存的是「题号」，跳转时需换算成页码
+  quizOffset = quizSections.length ? pages.indexOf(quizSections[0]) : 0;
+  // 最后两题显示“完成挑战”恭喜条
+  var lastQuiz = $('#q' + (order.length - 1));
+  if(lastQuiz){
+    var cg = document.createElement('div');
+    cg.className = 'congrats';
+    cg.innerHTML = '<div class="congrats-t">🎉 恭喜你，完成健康识谣挑战！</div>' +
+      '<div class="congrats-s">你答对了 <b id="finalScore">' + score + '</b> / ' + order.length + ' 题</div>';
+    var nav = $('.ex-nav', lastQuiz);
+    nav.parentNode.insertBefore(cg, nav);
+  }
+  $('#qTotalTip').textContent = order.length;
+  bindQuiz();
+}
+
+function bindQuiz(){
+  $$('.ans-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var page = btn.closest('.q-page');
+      if(!page || page.classList.contains('answered')) return;
+      var idx = parseInt(page.id.slice(1), 10);
+      var picked = btn.getAttribute('data-answer');
+      var correct = picked === order[idx].a;
+      page.classList.add('answered');
+      answers[idx] = { picked: picked, correct: correct };
+      if(correct) score++;
+
+      btn.classList.add(correct ? 'chosen-correct' : 'chosen-wrong');
+      if(!correct){
+        var right = $('.ans-btn[data-answer="' + order[idx].a + '"]', page);
+        if(right) right.classList.add('reveal');
+      }
+      var vd = $('[data-verdict]', page);
+      if(vd){ vd.textContent = correct ? '答对了' : '答错了'; vd.className = 'ex-verdict ' + (correct ? 'ok' : 'no'); }
+      var exp = $('.explain', page);
+      if(exp) exp.hidden = false;
+
+      popEmoji.textContent = correct ? '✅' : '❌';
+      popTitle.textContent = correct ? '回答正确！' : '这里有误区！';
+      popSub.textContent = correct
+        ? (order[idx].a === 'rumor' ? '没错，这就是一条网络谣言' : '没错，这确实是一条靠谱的说法')
+        : ('正确答案是「' + (order[idx].a === 'rumor' ? '是谣言' : '是真相') + '」——' + order[idx].brief);
+      overlay.classList.remove('good', 'bad');
+      overlay.classList.add(correct ? 'good' : 'bad');
+      openOverlay(overlay);
+      correct ? sound.correct() : sound.wrong();
+      announce((correct ? '回答正确。' : '回答错误，') + order[idx].brief);
+
+      var fs = $('#finalScore'); if(fs) fs.textContent = score;
+    });
+  });
+  $$('[data-go]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var q = parseInt(b.getAttribute('data-go'), 10);
+      // 题号 → 页码：最后一题的「查看成绩」会正好落在结束页
+      goTo(quizOffset + q, true);
+    });
+  });
+}
+
+function goTo(i, isQuizNav){
+  if(i < 0 || i >= pages.length) return;
+  pages[cur].classList.remove('active');
+  pages[cur].scrollTop = 0;
+  cur = i;
+  var p = pages[cur];
+  p.classList.add('active');
+  p.scrollTop = 0;
+  if(p.classList.contains('q-page')) decorate(p, 'quiz');
+  if(p.id === 'pLast'){ decorate(p, 'final'); renderResult(); }
+  if(p.id === 'p2') decorate(p, 'intro');
+  if(p.id === 'p1') decorate(p, 'cover');
+  if(p.id !== 'pLast') $('#stage').scrollTop = 0;
+  if(isQuizNav){ try{ p.scrollIntoView({block: 'start'}); }catch(e){} }
+}
+
+var overlay = $('#overlay'), popTitle = $('#popTitle'), popSub = $('#popSub'), popEmoji = $('#popEmoji');
+$('#popBtn').addEventListener('click', function(){
+  closeOverlay(overlay);
+  var ex = $('.page.active .explain');
+  if(ex) setTimeout(function(){
+    try{ ex.scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest'}); }catch(e){}
+  }, 80);
+});
+overlay.addEventListener('click', function(e){ if(e.target === overlay) closeOverlay(overlay); });
+
+/* 键盘：1 / 2 选答案，Enter / → 下一步 */
+document.addEventListener('keydown', function(e){
+  if($('.overlay.show')) return;
+  var p = $('.page.active');
+  if(!p) return;
+  if(p.classList.contains('q-page') && !p.classList.contains('answered')){
+    if(e.key === '1' || e.key === '2'){
+      var b = $$('.ans-btn', p)[e.key === '1' ? 0 : 1];
+      if(b) b.click();
+    }
+  } else {
+    if(e.key === 'Enter' || e.key === 'ArrowRight'){
+      var nb = $('.page.active .next-btn');
+      if(nb && !nb.hidden) nb.click();
+    }
+  }
+});
+
+/* ==========================================================================
+   6) 结果页
+   ========================================================================== */
+function renderResult(){
+  var total = order.length;
+  var ratio = total ? score / total : 0;
+  $('#ringScore').textContent = score;
+  $('#ringTotal').textContent = '/ ' + total + ' 题';
+  var C = 2 * Math.PI * 46;   // ≈289
+  var fg = $('#ringFg');
+  fg.setAttribute('stroke-dasharray', C.toFixed(0));
+  fg.setAttribute('stroke-dashoffset', C.toFixed(0));
+  setTimeout(function(){ fg.setAttribute('stroke-dashoffset', (C * (1 - ratio)).toFixed(1)); }, 120);
+  setTimeout(function(){ $('#levelBar').style.width = Math.round(ratio * 100) + '%'; }, 200);
+
+  var lv = LEVELS[0];
+  for(var i = 0; i < LEVELS.length; i++){ if(ratio >= LEVELS[i].min){ lv = LEVELS[i]; break; } }
+  $('#levelName').textContent = lv.name;
+  $('#levelDesc').textContent = lv.desc;
+
+  // 盲区自查
+  var wrong = [];
+  answers.forEach(function(a, i){ if(a && !a.correct) wrong.push(i); });
+  var body = $('#reviewBody');
+  var cnum = $('#reviewCount');
+  if(!wrong.length){
+    cnum.textContent = '';
+    body.innerHTML = '<div class="review-empty">🎯 本轮没有答错，全部识破！<br>你已经是朋友圈的辟谣担当了。</div>';
+  } else {
+    cnum.textContent = '共 ' + wrong.length + ' 处';
+    body.innerHTML = wrong.map(function(i){
+      var it = order[i];
+      return '<div class="review-item">' +
+        '<div class="review-q">第 ' + (i + 1) + ' 题：' + it.q + '</div>' +
+        '<div class="review-a">正确答案：<em>' + (it.a === 'rumor' ? '是谣言' : '是真相') + '</em>　·　' + it.brief + '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  // 最佳成绩
+  try{
+    var best = parseInt(localStorage.getItem(STORE_KEY) || '0', 10) || 0;
+    if(score > best){
+      localStorage.setItem(STORE_KEY, String(score));
+      showBestChip(score, total);
+      if(score === total) sound.finish();
+    } else {
+      showBestChip(best, total);
+    }
+  }catch(e){}
+}
+function showBestChip(best, total){
+  var chip = $('#bestChip');
+  if(!chip || !best) return;
+  chip.textContent = '🏅 历史最佳：' + best + ' / ' + total + ' 题';
+  chip.classList.add('on');
+}
+
+/* ==========================================================================
+   7) 分享 / 海报
+   ========================================================================== */
+var toastEl = $('#toast'), toastTimer = null;
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 2400);
+}
+
+function shareText(){
+  return '「豫」辨健康，不谣而愈——我答对了 ' + score + ' / ' + order.length +
+         ' 题，快来测测你的识谣力！';
+}
+$('#shareBtn').addEventListener('click', function(){
+  var text = shareText();
+  var url = location.href;
+  if(isWeChat){
+    openOverlay($('#wxGuide'));
+    return;
+  }
+  if(navigator.share){
+    navigator.share({ title: '「豫」辨健康 · 不谣而愈', text: text, url: url }).catch(function(){});
+    return;
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text + ' ' + url).then(
+      function(){ toast('邀请文案已复制，快去粘贴给亲友吧～'); },
+      function(){ toast('长按页面截图，分享给亲友～'); }
+    );
+  } else {
+    toast('长按页面截图，分享给亲友～');
+  }
+});
+$('#wxGuide').addEventListener('click', function(){ closeOverlay($('#wxGuide')); });
+
+/* 成绩海报：Canvas 生成，无外部依赖 */
+function drawPoster(){
+  var W = 750, H = 1334, cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  var c = cv.getContext('2d');
+  // 背景
+  var g = c.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, '#9fd9f7'); g.addColorStop(.36, '#c9e9fd');
+  g.addColorStop(.72, '#fdf3d3'); g.addColorStop(1, '#ffe8ae');
+  c.fillStyle = g; c.fillRect(0, 0, W, H);
+  // 太阳
+  var sg = c.createRadialGradient(600, 150, 10, 600, 150, 120);
+  sg.addColorStop(0, 'rgba(255,246,207,.95)'); sg.addColorStop(.5, 'rgba(255,210,87,.55)');
+  sg.addColorStop(1, 'rgba(255,185,55,0)');
+  c.fillStyle = sg; c.beginPath(); c.arc(600, 150, 120, 0, Math.PI * 2); c.fill();
+  c.fillStyle = '#ffd257'; c.beginPath(); c.arc(600, 150, 58, 0, Math.PI * 2); c.fill();
+  // 光点
+  c.fillStyle = 'rgba(255,255,255,.8)';
+  [[90,110,7],[210,70,5],[470,90,6],[660,300,5],[120,330,6],[380,60,4]].forEach(function(p){
+    c.beginPath(); c.arc(p[0], p[1], p[2], 0, Math.PI * 2); c.fill();
+  });
+  // 麦穗（简笔）
+  c.strokeStyle = '#d8ab3a'; c.lineWidth = 7; c.lineCap = 'round';
+  [[70, 1180, 320], [700, 1210, 280]].forEach(function(w){
+    c.beginPath(); c.moveTo(w[0], 1334); c.quadraticCurveTo(w[0] - 6, 1334 - w[2] * .6, w[0], 1334 - w[2]); c.stroke();
+  });
+
+  // 白卡
+  var x = 56, y = 190, w = W - 112, h = 980, r = 44;
+  c.save();
+  c.shadowColor = 'rgba(40,90,160,.28)'; c.shadowBlur = 40; c.shadowOffsetY = 16;
+  c.fillStyle = '#ffffff';
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.arcTo(x + w, y, x + w, y + h, r);
+  c.arcTo(x + w, y + h, x, y + h, r);
+  c.arcTo(x, y + h, x, y, r);
+  c.arcTo(x, y, x + w, y, r);
+  c.closePath(); c.fill();
+  c.restore();
+
+  c.textAlign = 'center';
+  c.fillStyle = '#8a5a00';
+  c.font = '700 28px "PingFang SC","Microsoft YaHei",sans-serif';
+  c.fillText('同 心 护 网 · 共 同 倡 议', W / 2, y + 78);
+
+  c.fillStyle = '#17438f';
+  c.font = '900 52px "Noto Serif SC","SimSun",serif';
+  c.fillText('「豫」辨健康 · 不谣而愈', W / 2, y + 152);
+
+  c.fillStyle = '#7a8aa5';
+  c.font = '600 26px "PingFang SC",sans-serif';
+  c.fillText('健康谣言识辨小课堂', W / 2, y + 200);
+
+  // 分数
+  c.fillStyle = '#e08a00';
+  c.font = '900 150px "PingFang SC",sans-serif';
+  c.fillText(String(score), W / 2 - 40, y + 380);
+  var sw = c.measureText(String(score)).width;
+  c.fillStyle = '#9aa8c0';
+  c.font = '800 40px "PingFang SC",sans-serif';
+  c.textAlign = 'left';
+  c.fillText('/ ' + order.length, W / 2 + 20, y + 380);
+  c.textAlign = 'center';
+
+  // 等级
+  var ratio = order.length ? score / order.length : 0, lv = LEVELS[0];
+  for(var i = 0; i < LEVELS.length; i++){ if(ratio >= LEVELS[i].min){ lv = LEVELS[i]; break; } }
+  c.fillStyle = '#1d5bd6';
+  c.font = '900 46px "PingFang SC",sans-serif';
+  c.fillText(lv.name, W / 2, y + 452);
+
+  // 分隔线
+  c.strokeStyle = '#e8eef8'; c.lineWidth = 2;
+  c.beginPath(); c.moveTo(x + 60, y + 500); c.lineTo(x + w - 60, y + 500); c.stroke();
+
+  // 锦囊
+  c.textAlign = 'left';
+  c.fillStyle = '#1c2b4a';
+  c.font = '900 32px "PingFang SC",sans-serif';
+  c.fillText('📌 防谣小锦囊', x + 56, y + 560);
+  var tips = [
+    '优先查阅科普中国、河南省网络辟谣平台等权威来源',
+    '不随意转发无明确出处的养生消息',
+    '身体不适及时就医，不轻信网上“神药偏方”',
+    '理性上网、科学求真：不信谣、不传谣、不造谣'
+  ];
+  c.font = '600 27px "PingFang SC",sans-serif';
+  var ty = y + 620;
+  tips.forEach(function(t){
+    c.fillStyle = '#f0a92e';
+    c.beginPath(); c.arc(x + 62, ty - 9, 7, 0, Math.PI * 2); c.fill();
+    c.fillStyle = '#33415e';
+    wrapText(c, t, w - 150).forEach(function(line, li){
+      c.fillText(line, x + 88, ty + li * 38);
+    });
+    ty += 38 * wrapText(c, t, w - 150).length + 22;
+  });
+
+  // 底部提示
+  c.fillStyle = '#7a5200';
+  c.font = '700 24px "PingFang SC",sans-serif';
+  c.textAlign = 'center';
+  c.fillText('科普仅供参考，不能替代专业医疗建议', W / 2, y + h - 40);
+
+  // 页脚
+  c.fillStyle = 'rgba(90,115,150,.85)';
+  c.font = '700 26px "PingFang SC",sans-serif';
+  c.fillText('2026年度河南省互联网辟谣优秀作品征集', W / 2, y + h + 110);
+  c.fillStyle = 'rgba(90,115,150,.7)';
+  c.font = '600 24px "PingFang SC",sans-serif';
+  c.fillText('长按保存 · 转发给亲友一起辨谣', W / 2, y + h + 156);
+
+  return cv.toDataURL('image/png');
+}
+function wrapText(c, text, maxWidth){
+  var lines = [], line = '';
+  for(var i = 0; i < text.length; i++){
+    var ch = text[i];
+    if(c.measureText(line + ch).width > maxWidth && line){ lines.push(line); line = ch; }
+    else line += ch;
+  }
+  if(line) lines.push(line);
+  return lines;
+}
+$('#posterBtn').addEventListener('click', function(){
+  try{
+    var url = drawPoster();
+    $('#posterImg').src = url;
+    $('#posterTip').textContent = isWeChat
+      ? '长按图片保存到相册，再转发给亲友'
+      : '已生成海报，可下载或直接右键保存';
+    openOverlay($('#posterOverlay'));
+  }catch(e){
+    toast('海报生成失败，请截图分享～');
+  }
+});
+$('#posterClose').addEventListener('click', function(){ closeOverlay($('#posterOverlay')); });
+$('#posterOverlay').addEventListener('click', function(e){ if(e.target === $('#posterOverlay')) closeOverlay($('#posterOverlay')); });
+$('#posterSave').addEventListener('click', function(){
+  var a = document.createElement('a');
+  a.href = $('#posterImg').src;
+  a.download = '识谣挑战成绩单.png';
+  document.body.appendChild(a); a.click(); a.remove();
+  toast('已开始下载图片～');
+});
+
+/* ==========================================================================
+   8) 启动 / 重开 / 音效
+   ========================================================================== */
+$('#coverBtn').addEventListener('click', function(){ sound.correct(); goTo(pages.indexOf($('#p2'))); });
+$('#startBtn').addEventListener('click', function(){ buildQuiz(); goTo(pages.indexOf($('#q0'))); });
+$('#restartBtn').addEventListener('click', function(){
+  $('#ringFg').setAttribute('stroke-dashoffset', (2 * Math.PI * 46).toFixed(0));
+  $('#levelBar').style.width = '0';
+  buildQuiz();
+  var p1 = $('#p1');
+  pages = $$('.page');
+  cur = 0;
+  pages.forEach(function(p, i){ p.classList.toggle('active', i === 0); p.scrollTop = 0; });
+  decorate(p1, 'cover');
+  $('#bestChip').classList.remove('on');
+});
+
+var soundBtn = $('#soundBtn');
+function syncSound(){
+  soundBtn.textContent = sound.isOn() ? '🔊' : '🔇';
+  soundBtn.setAttribute('aria-pressed', sound.isOn() ? 'true' : 'false');
+  soundBtn.setAttribute('aria-label', sound.isOn() ? '关闭音效' : '开启音效');
+}
+soundBtn.addEventListener('click', function(){ sound.set(!sound.isOn()); syncSound(); if(sound.isOn()) sound.correct(); });
+
+/* 初始化 */
+pages = $$('.page');
+decorate($('#p1'), 'cover');
+syncSound();
+try{
+  var b = parseInt(localStorage.getItem(STORE_KEY) || '0', 10) || 0;
+  if(b) showBestChip(b, QUESTIONS.length);
+}catch(e){}
+</script>
+</body>
 </html>

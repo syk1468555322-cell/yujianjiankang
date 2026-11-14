@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var KEY = 'yujian-pose-v1';
+  var completedThisPage = false;
 
   /* ---------- 几何（舞台坐标系 340 x 300） ---------- */
   var W = 340;
@@ -24,6 +24,7 @@
   var parts = null;
   var pos = { x: START.x, y: START.y };
   var locked = false;
+  var interacted = false;
 
   function clamp(v, a, b) {
     return v < a ? a : v > b ? b : v;
@@ -52,20 +53,11 @@
   }
 
   function readDone() {
-    try {
-      var o = JSON.parse(localStorage.getItem(KEY) || 'null');
-      return !!(o && o.done);
-    } catch (e) {
-      return false;
-    }
+    return completedThisPage;
   }
 
   function saveDone(best) {
-    try {
-      localStorage.setItem(KEY, JSON.stringify({ done: 1, best: Math.round(best), at: Date.now() }));
-    } catch (e) {
-      /* 隐私模式下写不进去，不影响本次体验 */
-    }
+    completedThisPage = true;
   }
 
   /* ---------- 场景 SVG ---------- */
@@ -213,7 +205,7 @@
     phone.setAttribute('aria-valuenow', String(Math.round(((pos.x - BOX.x0) / (BOX.x1 - BOX.x0)) * 100)));
     phone.setAttribute('aria-valuetext', '低头 ' + Math.round(g.ang) + ' 度，距眼 ' + Math.round(g.cm) + ' 厘米');
 
-    if (st.k === 'ok' && !locked) win(g);
+    if (st.k === 'ok' && interacted && !locked) win(g);
   }
 
   function win(g) {
@@ -234,6 +226,7 @@
   }
 
   function moveTo(x, y, animate) {
+    interacted = true;
     pos.x = clamp(x, BOX.x0, BOX.x1);
     pos.y = clamp(y, BOX.y0, BOX.y1);
     if (animate) phone.classList.add('is-anim');
@@ -350,6 +343,7 @@
     };
 
     locked = false;
+    interacted = false;
     pos = { x: START.x, y: START.y };
     mask.querySelector('.pose-done').hidden = true;
     mask.querySelector('.pose-skip').hidden = false;
@@ -364,6 +358,7 @@
     });
     mask.querySelector('.pose-skip').addEventListener('click', function () {
       if (locked) return;
+      interacted = false;
       pos.x = BEST.x;
       pos.y = BEST.y;
       phone.classList.add('is-anim');
@@ -371,6 +366,7 @@
     });
     mask.querySelector('.pose-again').addEventListener('click', function () {
       locked = false;
+      interacted = false;
       pos = { x: START.x, y: START.y };
       card.classList.remove('is-win');
       mask.querySelector('.pose-done').hidden = true;

@@ -1,0 +1,550 @@
+/* ===== 体验修复补丁 v1 =====
+   1. 安全区适配（刘海屏 / 底部 Home 条）
+   2. 触摸目标放大到 44px
+   3. 文字对比度提升到 WCAG AA
+   4. 弹层打开时锁定背景滚动
+   5. 标题换行与可读性微调
+   ================================= */
+
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scrollbar-gutter: stable;
+}
+
+body {
+  overscroll-behavior-y: contain;
+}
+
+/* ---------- 1. 安全区 ---------- */
+.site {
+  padding-top: var(--sat) !important;
+  padding-bottom: var(--sab) !important;
+  padding-left: calc(18px + var(--sal)) !important;
+  padding-right: calc(18px + var(--sar)) !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* 弹层：给刘海与底部手势条留出空间 */
+[role="dialog"],
+[role="alertdialog"] {
+  max-height: calc(100dvh - 24px - var(--sat) - var(--sab));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---------- 2. 触摸目标 ---------- */
+button,
+[role="button"],
+a {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(23, 41, 37, 0.09);
+}
+
+.text-button {
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+.text-button:active {
+  background: rgba(23, 41, 37, 0.06);
+}
+
+[role="dialog"] button[data-fix-close="1"],
+[role="dialog"] button[aria-label="Close"] {
+  min-width: 44px;
+  min-height: 44px;
+  margin: -8px -8px -8px 0;
+  border-radius: 12px;
+}
+
+/* ---------- 3. 对比度（原 3.82:1 / 4.48:1 → 5.3:1 以上） ---------- */
+.muted {
+  color: #5a6a62 !important;
+}
+.sub {
+  color: #4f6058 !important;
+}
+.foot {
+  color: #5a6a62 !important;
+  font-size: 12px;
+}
+
+/* ---------- 4. 弹层锁定背景滚动 ---------- */
+html:has([role="dialog"]),
+html:has([role="alertdialog"]),
+html[data-modal-open] {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+html:has([role="dialog"]) body,
+html[data-modal-open] body {
+  overflow: hidden !important;
+  overscroll-behavior: contain;
+}
+/* 注意：不要在 body 上设 touch-action:none，会让弹层内部也滚不动，
+   背景手势由 fix.js 的 wheel / touchmove 拦截处理 */
+
+/* ---------- 5. 排版微调 ---------- */
+h1,
+h2 {
+  text-wrap: balance;
+}
+h1 {
+  overflow-wrap: break-word;
+}
+
+/* 视频封面兜底：加载中不再是一片黑 */
+.fix-video-wrap {
+  position: relative;
+  line-height: 0;
+}
+.fix-video-wrap video {
+  background: #e8eddf;
+}
+.fix-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(23, 41, 37, 0.82);
+  color: #f4f7ee;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 6px 20px rgba(23, 41, 37, 0.28);
+}
+.fix-play:active {
+  transform: translate(-50%, -50%) scale(0.96);
+}
+.fix-play-icon {
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* 视频彻底加载不出来时的分解图兜底 */
+.fix-poster {
+  display: block;
+  width: 100%;
+  aspect-ratio: 5 / 3;
+  object-fit: cover;
+  background: #e8eddf;
+  border-radius: inherit;
+}
+.fix-video-tip {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #5a6a62;
+}
+
+/* ---------- 6. 小字号可读性 ---------- */@media (max-width: 767px) {
+  .tag,
+  .edition {
+    font-size: 12px;
+  }
+}
+
+/* 减少动态效果：保留系统级降级，仅补充过渡清零 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- 7. 动作演示弹层：强制成“视口底部弹层” ----------
+   原弹层用 top:50% + translate:-50% 居中，在部分微信 WebView 上
+   会算成相对整页定位，导致弹层掉到屏幕下半部、内容被裁掉。
+   这里直接接管：贴底、限高、内部滚动，位置由 fitSheet() 兜底校正。 */
+[role="dialog"].exercise-dialog {
+  position: fixed !important;
+  top: auto !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+  max-width: 560px !important;
+  max-height: 88vh !important;
+  translate: none !important;
+  transform: none !important;
+  animation: none !important;
+  border: 0 !important;
+  border-radius: 22px 22px 0 0 !important;
+  padding: 18px 18px calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  background: #fff !important;
+  box-shadow: 0 -18px 60px rgba(16, 31, 25, 0.28) !important;
+  z-index: 70 !important;
+}
+
+[role="dialog"].exercise-dialog video {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 5 / 3;
+  max-height: 46vh;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #dfe7de;
+  display: block !important;
+  margin: 12px 0 6px !important;
+}
+
+[role="dialog"].exercise-dialog [data-slot="dialog-title"],
+[role="dialog"].exercise-dialog h2 {
+  font-size: 23px !important;
+  line-height: 1.3 !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.5px !important;
+  margin: 0 44px 6px 0 !important;
+}
+[role="dialog"].exercise-dialog [data-slot="dialog-description"] {
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+  color: #4f6058 !important;
+  margin: 0 0 2px !important;
+}
+[role="dialog"].exercise-dialog p {
+  font-size: 14px;
+  line-height: 1.75;
+}
+[role="dialog"].exercise-dialog small {
+  display: block;
+  color: #5a6a62;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+/* ---------- 场景插画：加载期间先显示模糊底图，避免出现空白灰块 ---------- */
+.clue-scene {
+  background-image: url("data:image/jpeg;base64,/9j//gAQTGF2YzYyLjI4LjEwMQD/2wBDAAgQEBMQExYWFhYWFhoYGhsbGxoaGhobGxsdHR0iIiIdHR0bGx0dICAiIiUmJSMjIiMmJigoKDAwLi44ODpFRVP/xABvAAEAAwEBAAAAAAAAAAAAAAAFBAMBBwYBAQEBAAAAAAAAAAAAAAAAAAMBAhAAAQMCAwcFAQEAAAAAAAAAARECAyEAEjFBUQQTIjKRU/DRoWFxFBURAAICAwEBAAAAAAAAAAAAAAARASFRgbECYf/AABEIAA4AGAMBIgACEQADEQD/2gAMAwEAAhEDEQA/AEeljgKI1QirpVTVBts7A6XC1kpjcH6AkuPo1udJiG7YiijCmZCChBX8pY8e/vgPLRCVRrR87dtLDzcbr4K1OjobZeGTyDpGJUyCqtb3+2Lxs7t97843fZY2RvAY7iaEfS5g1yuz/Ul8cXY3iXjhVGT/2Q==");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ---------- 习惯自查结果卡：把「你的派系」做成这张卡的视觉主角 ---------- */
+.habit-result.has-faction {
+  box-shadow: 13px 15px #17292517, 0 0 0 2px var(--faction-accent, #c8f061) inset;
+}
+
+.habit-result.has-faction::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--faction-accent, #c8f061), transparent 82%);
+}
+
+.fix-faction-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.fix-faction-badge {
+  display: inline-flex;
+  align-items: center;
+  background: var(--faction-accent, #c8f061);
+  color: #10261f;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  padding: 5px 11px;
+  border-radius: 999px;
+  box-shadow: 0 2px 10px #0000002e;
+}
+
+.fix-faction-hint {
+  color: #dbe4ff;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+.habit-result.has-faction .eyebrow {
+  color: #b9cbf5;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+}
+
+.habit-result.has-faction h2 {
+  display: inline-block;
+  margin: 10px 0 4px -12px;
+  padding: 4px 14px 6px;
+  font-size: 52px;
+  line-height: 1.02;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  border-radius: 12px;
+  color: var(--faction-accent, #c8f061);
+  background: linear-gradient(100deg, #06152c4d, #06152c1a 82%);
+  box-shadow: inset 4px 0 0 var(--faction-accent, #c8f061), 0 10px 30px #0000002e;
+  text-shadow: 0 2px 14px #04101f40;
+}
+
+.habit-result.has-faction h2::after {
+  content: "";
+  display: block;
+  width: 96px;
+  height: 7px;
+  margin-top: 9px;
+  border-radius: 999px;
+  background: var(--faction-accent, #c8f061);
+  box-shadow: 0 0 18px var(--faction-accent, #c8f061);
+}
+
+@media (max-width: 640px) {
+  .habit-result.has-faction {
+    box-shadow: 8px 9px #17292517, 0 0 0 2px var(--faction-accent, #c8f061) inset;
+  }
+
+  .habit-result.has-faction h2 {
+    font-size: 40px;
+    padding: 3px 12px 5px;
+    margin-left: -10px;
+  }
+}
+
+/* 派系建议文案：跟着派系上色，形成「鼓励 → 注意」的过渡 */
+.habit-result.has-faction h2 + p {
+  color: var(--faction-tint, #e2f6b4);
+  line-height: 1.62;
+  margin-top: 4px;
+}
+
+/* 卡头的盾牌图标：主包写死 color:var(--lime)，这里跟着派系走，
+   否则黄派/橙派卡上会顶着一个青柠绿的盾牌，和下方标题打架 */
+.habit-result.has-faction > svg {
+  color: var(--faction-accent, #c8f061);
+}
+
+/* 右下角的装饰圆环同理：原来固定青柠绿 .2 透明度 */
+.habit-result.has-faction:after {
+  border-color: var(--faction-soft, rgba(200, 240, 97, 0.26));
+}
+
+/* ============================================================
+   8. 动效层
+   原站几乎是硬切：换站瞬间内容整体替换，没有任何过渡。
+   这里只在补丁层加动效，不碰主包。全部只动 opacity / transform /
+   scale，不触发重排，低端机也不掉帧。
+   注意：本文件前段的 prefers-reduced-motion 规则用 * 兜底，
+   这些动画会被自动清零，无需重复处理。
+   ============================================================ */
+
+/* ---- 8.1 切站入场 ----
+   React 切站时只改 .site 的 class（site page-N），节点被复用，
+   同名动画不会重播。所以给 0~7 各绑一个不同名的 keyframes，
+   class 一变，animation-name 就变，动画自然重新开始。 */
+@keyframes fix-site-in-0 {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fix-site-in-1 {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fix-site-in-2 {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fix-site-in-3 {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fix-site-in-4 {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fix-site-in-5 {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fix-site-in-6 {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fix-site-in-7 {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* 用 backwards：动画结束后不保留，.site 回到干净的 transform:none，
+   避免它长期被当成 transform 容器，影响内部 position:fixed 的点阵底纹 */
+.site {
+  animation: fix-site-in-0 0.34s cubic-bezier(0.22, 0.9, 0.28, 1) backwards;
+}
+.site.page-1 { animation-name: fix-site-in-1; }
+.site.page-2 { animation-name: fix-site-in-2; }
+.site.page-3 { animation-name: fix-site-in-3; }
+.site.page-4 { animation-name: fix-site-in-4; }
+.site.page-5 { animation-name: fix-site-in-5; }
+.site.page-6 { animation-name: fix-site-in-6; }
+.site.page-7 { animation-name: fix-site-in-7; }
+
+/* ---- 8.2 站内内容依次浮入 ----
+   同屏多张卡片时给一点时间差，比一起出现更有层次。 */
+@keyframes fix-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.quiz-list > *,
+.signal-card,
+.habit-option,
+.action-picker > *,
+.card-action,
+.play-heading {
+  animation: fix-rise 0.44s cubic-bezier(0.22, 0.9, 0.28, 1) both;
+}
+
+.quiz-list > :nth-child(2),
+.signal-card:nth-child(2),
+.habit-option:nth-child(2),
+.action-picker > :nth-child(2) { animation-delay: 0.05s; }
+
+.quiz-list > :nth-child(3),
+.signal-card:nth-child(3),
+.habit-option:nth-child(3),
+.action-picker > :nth-child(3) { animation-delay: 0.1s; }
+
+.quiz-list > :nth-child(4),
+.signal-card:nth-child(4),
+.habit-option:nth-child(4) { animation-delay: 0.15s; }
+
+.quiz-list > :nth-child(5),
+.signal-card:nth-child(5),
+.habit-option:nth-child(5) { animation-delay: 0.2s; }
+
+/* 标题比卡片早半拍，读起来是「先看到在哪儿，再看到有什么」 */
+.play-heading { animation-delay: 0.02s; }
+
+/* ---- 8.3 派系结果卡：让「算出来」这件事有过程感 ---- */
+@keyframes fix-pop {
+  from { opacity: 0; transform: scale(0.82); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fix-slide-right {
+  from { opacity: 0; transform: translateX(-14px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fix-grow-line {
+  from { opacity: 0; width: 0; }
+  to   { opacity: 1; width: 96px; }
+}
+
+.habit-result.has-faction {
+  animation: fix-rise 0.46s cubic-bezier(0.22, 0.9, 0.28, 1) both;
+}
+
+.habit-result.has-faction .fix-faction-head {
+  animation: fix-pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) 0.14s both;
+}
+
+.habit-result.has-faction h2 {
+  animation: fix-slide-right 0.5s cubic-bezier(0.22, 0.9, 0.28, 1) 0.2s both;
+}
+
+.habit-result.has-faction h2::after {
+  animation: fix-grow-line 0.46s cubic-bezier(0.22, 0.9, 0.28, 1) 0.42s both;
+}
+
+/* ---- 8.4 按压反馈 ----
+   用独立的 scale 属性，不覆盖元素已有的 transform 和 transition，
+   绝对居中的按钮（translate -50%）不会因此跳位，原有的
+   颜色/阴影过渡也照旧。 */
+button:not(:disabled):active,
+[role="button"]:active,
+[role="radio"]:active,
+.habit-option:active,
+.clue-hint-button:active {
+  scale: 0.972;
+}
+
+/* ---- 8.5 进度条走位 ----
+   Radix 的 indicator 靠 transform 平移，给个缓动就不再生硬跳格。 */
+[role="progressbar"] > * {
+  transition: transform 0.5s cubic-bezier(0.3, 0.8, 0.3, 1);
+}
+
+/* ---- 8.6 动作演示弹层 ----
+   弹层位置由 fitSheet() 用 getBoundingClientRect 实测校正，所以外层
+   绝不能加位移（会量偏）。只在透明度和内层内容上做文章。 */
+@keyframes fix-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+[role="dialog"].exercise-dialog {
+  animation: fix-fade-in 0.22s ease-out both !important;
+}
+
+[role="dialog"].exercise-dialog > * {
+  animation: fix-rise 0.34s cubic-bezier(0.22, 0.9, 0.28, 1) 0.05s both;
+}
+
+/* ---- 动作视频上的派系盾牌
+   视频画面里的字是烧进 mp4 的，只能在上面叠一层浮标；
+   位置由 JS 每帧按 video 实测矩形写入 left / top。 */
+.fix-video-badge {
+  position: fixed;
+  z-index: 90;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: var(--badge-accent, #c8f061);
+  background: rgba(9, 24, 17, 0.78);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16), 0 8px 20px rgba(0, 0, 0, 0.34);
+  pointer-events: none;
+  animation: fix-badge-pop 0.36s cubic-bezier(0.22, 0.9, 0.28, 1);
+}
+
+@keyframes fix-badge-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.84);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fix-video-badge {
+    animation: none;
+  }
+}
